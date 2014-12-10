@@ -31,14 +31,14 @@ var events = Element.NativeEvents,
 
 this.History = new new Class({
 
-	Implements: [Class.Binds, Events],
+	Implements: Events,
 
 	initialize: hasPushState ? function(){
 		events[event] = 2;
-		window.addEvent(event, this.bound('pop'));
+		window.addEvent(event, this.pop);
 	} : function(){
 		events[event] = 1;
-		window.addEvent(event, this.bound('pop'));
+		window.addEvent(event, this.pop);
 
 		this.hash = location.hash;
 		var hashchange = ('onhashchange' in window);
@@ -53,6 +53,7 @@ this.History = new new Class({
 		if (base && base != url) base = null;
 
 		history.pushState(state || null, title || null, url);
+		// this.onChange(url, state);
 		this.onChange(url, state);
 	} : function(url){
 		location.hash = cleanURL(url);
@@ -72,13 +73,16 @@ this.History = new new Class({
 			base = null;
 			return;
 		}
-		this.onChange(url, event.event.state);
+		// this.onChange(url, event.event.state);
+		this.History.onChange(url, event.event.state);
+
 	} : function(){
 		var hash = location.hash;
 		if (this.hash == hash) return;
 
 		this.hash = hash;
-		this.onChange(cleanURL(hash.substr(1)));
+		// this.onChange(cleanURL(hash.substr(1)));
+		this.History.onChange(cleanURL(hash.substr(1)));
 	},
 
 	onChange: function(url, state){
