@@ -9,7 +9,7 @@ authors: Christoph Pojer (@cpojer)
 
 license: MIT-style license.
 
-requires: [Core/Events, Core/Element.Event, Class-Extras/Class.Binds]
+requires: [Core/Events, Core/Element.Event, More/Class.Binds]
 
 provides: History
 
