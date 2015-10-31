@@ -9,7 +9,7 @@ authors: Christoph Pojer (@cpojer)
 
 license: MIT-style license.
 
-requires: [Core/Events, Core/Element.Event, Class-Extras/Class.Binds]
+requires: [Core/Events, Core/Element.Event, More/Class.Binds]
 
 provides: History
 
@@ -31,7 +31,8 @@ var events = Element.NativeEvents,
 
 this.History = new new Class({
 
-	Implements: Events,
+	Implements: [Events],
+	Binds: ['pop'],
 
 	initialize: hasPushState ? function(){
 		events[event] = 2;
@@ -53,7 +54,6 @@ this.History = new new Class({
 		if (base && base != url) base = null;
 
 		history.pushState(state || null, title || null, url);
-		// this.onChange(url, state);
 		this.onChange(url, state);
 	} : function(url){
 		location.hash = cleanURL(url);
@@ -73,16 +73,13 @@ this.History = new new Class({
 			base = null;
 			return;
 		}
-		// this.onChange(url, event.event.state);
-		this.History.onChange(url, event.event.state);
-
+		this.onChange(url, event.event.state);
 	} : function(){
 		var hash = location.hash;
 		if (this.hash == hash) return;
 
 		this.hash = hash;
-		// this.onChange(cleanURL(hash.substr(1)));
-		this.History.onChange(cleanURL(hash.substr(1)));
+		this.onChange(cleanURL(hash.substr(1)));
 	},
 
 	onChange: function(url, state){
